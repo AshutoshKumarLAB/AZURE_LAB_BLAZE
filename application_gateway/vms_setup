@@ -1,0 +1,39 @@
+#!/bin/bash
+
+$RESOURCE_GROUP="vmrg"
+$USERNAME="azureuser"
+$PASSWORD='warrison@12345'
+
+echo "Creating Resource Group..."
+az group create --name $RESOURCE_GROUP --location centralus
+
+echo "Creating VM1..."
+az vm create --resource-group $RESOURCE_GROUP --name vm1 --location centralus --image Ubuntu2204 --admin-username $USERNAME --admin-password $PASSWORD --authentication-type password --size Standard_B1s --public-ip-sku Standard --vnet-name vnet1 --subnet subnet1
+
+az vm open-port --resource-group $RESOURCE_GROUP --name vm1 --port 3000
+
+az vm run-command invoke --resource-group $RESOURCE_GROUP --name vm1 --command-id RunShellScript --scripts "sudo apt update && sudo apt install nginx -y && sudo sed -i 's/listen 80 default_server;/listen 3000 default_server;/g' /etc/nginx/sites-available/default && echo '<h1>You hit VM1</h1>' | sudo tee /var/www/html/index.nginx-debian.html && sudo systemctl restart nginx"
+
+echo "Creating VM2..."
+az vm create --resource-group $RESOURCE_GROUP --name vm2 --location centralus --image Ubuntu2204 --admin-username $USERNAME --admin-password $PASSWORD --authentication-type password --size Standard_B1s --public-ip-sku Standard --vnet-name vnet1 --subnet subnet1
+
+az vm open-port --resource-group $RESOURCE_GROUP --name vm2 --port 3000
+
+az vm run-command invoke --resource-group $RESOURCE_GROUP --name vm2 --command-id RunShellScript --scripts "sudo apt update && sudo apt install nginx -y && sudo sed -i 's/listen 80 default_server;/listen 3000 default_server;/g' /etc/nginx/sites-available/default && echo '<h1>You hit VM2 - Same VNET</h1>' | sudo tee /var/www/html/index.nginx-debian.html && sudo systemctl restart nginx"
+
+echo "Creating VM3..."
+az vm create --resource-group $RESOURCE_GROUP --name vm3 --location centralus --image Ubuntu2204 --admin-username $USERNAME --admin-password $PASSWORD --authentication-type password --size Standard_B1s --public-ip-sku Standard --vnet-name vnet2 --subnet subnet1
+
+az vm open-port --resource-group $RESOURCE_GROUP --name vm3 --port 3000
+
+az vm run-command invoke --resource-group $RESOURCE_GROUP --name vm3 --command-id RunShellScript --scripts "sudo apt update && sudo apt install nginx -y && sudo sed -i 's/listen 80 default_server;/listen 3000 default_server;/g' /etc/nginx/sites-available/default && echo '<h1>You hit VM3 - Different VNET</h1>' | sudo tee /var/www/html/index.nginx-debian.html && sudo systemctl restart nginx"
+
+echo "Creating VM4..."
+az vm create --resource-group $RESOURCE_GROUP --name vm4 --location westus --image Ubuntu2204 --admin-username $USERNAME --admin-password $PASSWORD --authentication-type password --size Standard_B1s --public-ip-sku Standard --vnet-name vnet3 --subnet subnet1
+
+az vm open-port --resource-group $RESOURCE_GROUP --name vm4 --port 3000
+
+az vm run-command invoke --resource-group $RESOURCE_GROUP --name vm4 --command-id RunShellScript --scripts "sudo apt update && sudo apt install nginx -y && sudo sed -i 's/listen 80 default_server;/listen 3000 default_server;/g' /etc/nginx/sites-available/default && echo '<h1>You hit VM4 - Different Region</h1>' | sudo tee /var/www/html/index.nginx-debian.html && sudo systemctl restart nginx"
+
+
+az vm list-ip-addresses -g $RESOURCE_GROUP -o table
