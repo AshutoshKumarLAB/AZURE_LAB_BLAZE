@@ -1,0 +1,6 @@
+##az login
+$vaultName  = "vaulttestblaze1234"
+$secretName = "mykeyvaulttest"
+$filePath   = "C:\Users\ASHUTOSH KUMAR\Downloads\vm01testvault_key.pem"
+az keyvault secret set --vault-name $vaultName --name $secretName --file "$filePath"
+az keyvault secret show --vault-name $vaultName --name $secretName
