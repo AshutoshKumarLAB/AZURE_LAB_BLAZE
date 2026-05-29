@@ -1,0 +1,44 @@
+-- CREATE DATABASE
+CREATE DATABASE companydb;
+
+-- USE DATABASE
+USE companydb;
+
+-- CREATE TABLE
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+-- FIRST 3 ENTRIES
+INSERT INTO employees (emp_id, emp_name, department, salary)
+VALUES
+(1, 'Rahul', 'HR', 30000),
+(2, 'Amit', 'IT', 45000),
+(3, 'Sneha', 'Finance', 40000);
+
+-- NEXT 3 ENTRIES
+INSERT INTO employees (emp_id, emp_name, department, salary)
+VALUES
+(4, 'Priya', 'IT', 50000),
+(5, 'Karan', 'Sales', 35000),
+(6, 'Neha', 'HR', 32000);
+
+-- NEXT 3 ENTRIES
+INSERT INTO employees (emp_id, emp_name, department, salary)
+VALUES
+(7, 'Vikas', 'Finance', 47000),
+(8, 'Anjali', 'Marketing', 38000),
+(9, 'Rohit', 'IT', 52000);
+
+-- LAST 3 ENTRIES
+INSERT INTO employees (emp_id, emp_name, department, salary)
+VALUES
+(10, 'Pooja', 'Sales', 36000),
+(11, 'Arjun', 'Marketing', 41000),
+(12, 'Meera', 'Finance', 48000);
+
+-- VIEW TABLE
+SELECT * FROM employees;
