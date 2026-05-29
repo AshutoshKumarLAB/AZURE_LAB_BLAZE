@@ -1,0 +1,14 @@
+https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver17&tabs=ubuntu-install%2Codbc-ubuntu-2404
+
+
+
+CREATE TABLE employees (id INT, name VARCHAR(50));
+GO
+INSERT INTO employees VALUES (1,'Rahul'); 
+GO
+SELECT * FROM employees; UPDATE employees SET name='Aman' WHERE id=1; 
+GO
+DELETE FROM employees WHERE id=1;
+GO
+
+sqlcmd -S $FQDN -d $SQLDB -U $ADMINUSER -P $ADMINPASS
